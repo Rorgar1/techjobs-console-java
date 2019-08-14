@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -76,13 +77,37 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
 
         return jobs;
     }
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {  //iterates through allJobs, creating a Hashmap row for each of the job listings
+
+            ArrayList<String> keys = new ArrayList<>(row.keySet());  //creates an ArrayList - taking in the keys of each row and putting the keys in the ArrayList
+
+            for(String column: keys) {  //iterating through the keys
+                String aValue = row.get(column);
+                //retrieves the column that was iterated through using keys above and grabs the corresponding row. This is assigned to the string aValue variable
+
+                if (aValue.toLowerCase().contains(value.toLowerCase())) {   //if the searched for string is contained within aValue
+                    // if (aValue.equalsIgnoreCase(value)) {
+                    jobs.add(row);  //then add a row to the array
+                }
+            }
+        }
+        return jobs;
+
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list
